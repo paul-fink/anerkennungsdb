@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>translations/anerkennungsdb_de.qm</file>
+        <file>images/akdb128.png</file>
+    </qresource>
+</RCC>

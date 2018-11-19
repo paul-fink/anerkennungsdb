@@ -1,0 +1,8 @@
+# backup files
+*~$
+
+# local configuration
+*.pro.user
+
+# local 3rd party
+3rdparty/*
