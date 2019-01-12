@@ -80,6 +80,11 @@ void ConfigDialog::initGuiElements()
     ui->languageComboBox->setCurrentIndex(-1);
     ui->languageComboBox->blockSignals(false);
 
+    //Font size
+    ui->fontsizeSpinBox->blockSignals(true);
+    ui->fontsizeSpinBox->setValue(QApplication::font().pointSize());
+    ui->fontsizeSpinBox->blockSignals(false);
+
 }
 
 /*!
@@ -171,4 +176,25 @@ void ConfigDialog::setLanguage(const QString &lang)
 QString ConfigDialog::language() const
 {
     return ui->languageComboBox->currentData().toString();
+}
+
+
+/*!
+ * \brief This function sets the font size of the GUI
+ *
+ * The int \a size is set into the font size spinbox
+ */
+void ConfigDialog::setFontSize(const int size)
+{
+    ui->fontsizeSpinBox->setValue(size);
+}
+
+/*!
+ * \brief  Returns the font size of the GUI in an int
+ *
+ * \return A single int of the value displayed currently in the font size spinbox
+ */
+int ConfigDialog::fontSize() const
+{
+    return ui->fontsizeSpinBox->value();
 }

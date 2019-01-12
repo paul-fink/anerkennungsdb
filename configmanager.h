@@ -24,6 +24,7 @@
 
 #include <QtGlobal>
 #include <QCoreApplication>
+#include <QApplication>
 #include <QSettings>
 #include <QLibraryInfo>
 #include <QStandardPaths>
@@ -43,16 +44,23 @@ public:
 
     QVariant readSetting(const QString &key, const QVariant &defaultValue = QVariant(), const QString &group = QString());
     void writeSetting(const QString &key, const QVariant &value, const QString &group = QString());
+    void removeGroupSettings(const QString &group);
 
-    void loadSettings();
     QString getDatabaseLocation();
 
     void execConfigDialog(QWidget *parent);
 
     void loadLanguage();
+    void loadFontSize();
+
+    void loadSettings();
+
 private:
     QSettings *persistentConfig;
+
+    void loadSettingsFile();
     QString configFilePath() const;
+
 
     QHash<QString, QString> *languages;
     QTranslator *qtTranslator, *qtBaseTranslator, *appTranslator;

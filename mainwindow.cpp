@@ -43,8 +43,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     ididx(-1),
     lastididx(-1),
-    hasSearched(false)
+    lastTableIndex(-1),
+    hasSearched(false), allowResize(true)
 {
+    ConfigManager::getInstance()->loadSettings();
     ui->setupUi(this);
     tableModel = new QSqlQueryModel();
     qsfpm = new QSortFilterProxyModel();
@@ -111,6 +113,7 @@ bool MainWindow::initGuiElements()
     // restore the last sizes, which are stored in the settings
     restoreGeometry(ConfigManager::getInstance()->readSetting("windowgeometry", 0, "applicationsize").toByteArray());
     restoreState(ConfigManager::getInstance()->readSetting("windowstate", 0, "applicationsize").toByteArray());
+    ui->mainsplitter->restoreState(ConfigManager::getInstance()->readSetting("splittersizes", 0, "applicationsize").toByteArray());
 
     QComboBox *viewBox = ui->viewComboBox;
     if(viewBox) {
@@ -219,7 +222,7 @@ void MainWindow::adjustModel(const QString &table, const QStringList &addcols, c
     // If Anerkennungen table is to be displayed, the statement needs to be adjusted to perform the actual join, otherwise only IDs would be displayed
     if(table == "Anerkennungen") {
         mytable = "Module M JOIN Anerkennungen A ON M.ID = A.MID JOIN Kurse K ON K.ID = A.KID";
-        selectcols = "A.ID AS ID, K.Kursname AS 'Kurs-Name', K.ECTS AS 'Kurs-ECTS', K.Herkunft AS 'Kurs-Herkunft', M.Modulname AS 'Modul-Name', M.ECTS AS 'Modul-ECTS', M.PO AS 'Modul-PO'";
+        selectcols = "A.ID AS ID, K.Kursname AS 'Kurs-Name', K.ECTS AS 'Kurs-ECTS', K.Herkunft AS 'Kurs-Herkunft', M.Modulname AS 'Modul-Name', M.ECTS AS 'Modul-ECTS', M.PO AS 'Modul-PO', A.Datum AS 'Datum'";
     }
 
     QStringList addcolums, addvalues, connectrel;
@@ -249,6 +252,9 @@ void MainWindow::adjustModel(const QString &table, const QStringList &addcols, c
     // Fetching all entries first allows to display all as desired
     while (tableModel->canFetchMore()) tableModel->fetchMore();
 
+    // disallow save of column sizes
+    allowResize = false;
+
     // Create the horizontal header for the table view
     ididx = -1;
     QMap<QString, QString> columnnames;
@@ -273,6 +279,8 @@ void MainWindow::adjustModel(const QString &table, const QStringList &addcols, c
                 columnnames.insert(colname, "M.ECTS");
             } else if(QString("Modul-PO").compare(colname, Qt::CaseInsensitive) == 0) {
                 columnnames.insert(colname, "M.PO");
+            } else if(QString("Datum").compare(colname, Qt::CaseInsensitive) == 0) {
+                columnnames.insert(colname, "A.Datum");
             }
         } else {
             // directly store header names (which are same as database column names) in map
@@ -289,7 +297,6 @@ void MainWindow::adjustModel(const QString &table, const QStringList &addcols, c
     // table view takes proxy model as model
     ui->viewTable->setModel(qsfpm);
 
-
     // Hide the ID column:
     // First unhide the previous id column and then id the new one
     if(lastididx > -1) {
@@ -302,6 +309,9 @@ void MainWindow::adjustModel(const QString &table, const QStringList &addcols, c
 
     // Customisation of the features of the table view
     ui->viewTable->resizeColumnsToContents();
+
+    // allow save of column sizes
+    allowResize = true;
     ui->viewTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
     ui->viewTable->horizontalHeader()->setStretchLastSection(true);
     ui->viewTable->verticalHeader()->setVisible(false);
@@ -312,7 +322,15 @@ void MainWindow::adjustModel(const QString &table, const QStringList &addcols, c
 
     // connect a row change to a (custom) signal
     connect(ui->viewTable->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
-                this, SLOT(tableViewSelectionModel_currentRowChanged(QModelIndex,QModelIndex)));
+                this, SLOT(tableViewSelectionModel_currentRowChanged(QModelIndex, QModelIndex)));
+    // connect a column header rezise event to a slot performing row height resizing
+    connect(ui->viewTable->horizontalHeader(), SIGNAL(sectionResized(int, int, int)), this,
+            SLOT(tableView_headerResized(int, int, int)));
+    // restore the saved sizes
+    restoreSizeViewColumns();
+    ui->viewTable->resizeRowsToContents();
+
+
 
     // insert the column names into the comboboxes of the search condition rows
     nameIndex = -1;
@@ -346,6 +364,52 @@ void MainWindow::adjustModel(const QString &table, const QStringList &addcols, c
     } else {
         statusBar()->clearMessage();
     }
+}
+
+bool MainWindow::restoreSizeViewColumns(const QString &table)
+{
+    QHeaderView *header = ui->viewTable->horizontalHeader();
+    QString view = table;
+    if(view.isEmpty()) {
+        view = getCurrentView();
+    }
+    int ncols = header->count();
+    if(ncols > 0) {
+        allowResize = false;
+        QStringList savedValues = ConfigManager::getInstance()->readSetting(QString("%1-sizes").arg(view), QVariant(), "tableViewWidths").toString().split(",");
+        if(savedValues.size() == 1) return false;
+        for(int i = 0; i < ncols; ++i) {
+            if(!header->isSectionHidden(i)) {
+                header->resizeSection(i, savedValues.at(i).toInt());
+            }
+        }
+        allowResize = true;
+        return true;
+    }
+    return false;
+}
+
+bool MainWindow::saveSizeViewColumns(const QString &table)
+{
+    QHeaderView *header = ui->viewTable->horizontalHeader();
+    QString view = table;
+    if(view.isEmpty()) {
+       view = getCurrentView();
+    }
+    QStringList columnSizes;
+    int ncols = header->count();
+    if(ncols > 0) {
+        for(int i = 0; i < ncols; ++i) {
+            if(!header->isSectionHidden(i)) {
+                columnSizes << QString::number(header->sectionSize(i));
+            } else {
+                columnSizes << "";
+            }
+        }
+        ConfigManager::getInstance()->writeSetting(QString("%1-sizes").arg(view), columnSizes.join(","), "tableViewWidths");
+        return true;
+    }
+    return false;
 }
 
 /*!
@@ -495,6 +559,26 @@ void MainWindow::tableViewSelectionModel_currentRowChanged(const QModelIndex &cu
     Q_UNUSED(previous)
 
     enableModify();
+}
+
+
+/*!
+ * \brief Custom singal on resized column
+ *
+ * This signal adapts the height of the rows so the content is still entirely visible.
+ * It also saves the layout of the current tableview to settings
+ *
+ * \warning The arguments \a logicalIndex, \a oldSize and \a newSize are unused
+ */
+void MainWindow::tableView_headerResized(int logicalIndex, int oldSize, int newSize)
+{
+    Q_UNUSED(logicalIndex)
+    Q_UNUSED(oldSize)
+    Q_UNUSED(newSize)
+    ui->viewTable->resizeRowsToContents();
+    if(allowResize) {
+        saveSizeViewColumns();
+    }
 }
 
 /*!
@@ -943,11 +1027,13 @@ void MainWindow::print(QPrinter *printer)
  * This function makes sure that the GUI is entirely reset after a change happened.
  * This applies to the search conditions, any buttons, menus and of course the table view.
  *
- * \warning The argument \a index is unused.
+ * It also saves the current layout of the columns of the previous table
  */
 void MainWindow::on_viewComboBox_currentIndexChanged(int index)
 {
-    Q_UNUSED(index)
+
+    saveSizeViewColumns(ui->viewComboBox->itemData(lastTableIndex).toString());
+    lastTableIndex = index;
     readonlyId.clear();
     resetViewAndSearch(true);
     visibilityReadonly();
@@ -959,15 +1045,16 @@ void MainWindow::on_viewComboBox_currentIndexChanged(int index)
  * \brief The index in the view combobox changed
  *
  * This function adapts the table view when the read only combobox changes
- *
- * \warning The argument \a index is unused.
  */
 void MainWindow::on_readonlyComboBox_currentIndexChanged(int index)
 {
-    QModelIndex qidx = readonlyProxy->mapToSource(ui->readonlyComboBox->model()->index(index,0));
-    readonlyId = readonlyProxy->sourceModel()->data(qidx).toString();
-    adjustModel(getCurrentView());
-    enablePrint();
+
+    if(index > -1) {
+        QModelIndex qidx = readonlyProxy->mapToSource(ui->readonlyComboBox->model()->index(index,0));
+        readonlyId = readonlyProxy->sourceModel()->data(qidx).toString();
+        adjustModel(getCurrentView());
+        enablePrint();
+    }
 }
 
 /*!
@@ -1146,6 +1233,7 @@ void MainWindow::on_actionExportCsv_triggered()
     QMessageBox::information(this, tr("Database Export"), tr("Database has been successfully exported to a zip-archive of CSV files."));
 }
 
+
 /*!
  * \brief Import SQLite menu entry
  *
@@ -1207,6 +1295,7 @@ void MainWindow::on_actionPrint_triggered()
 void MainWindow::on_actionOptions_triggered()
 {
     ConfigManager::getInstance()->execConfigDialog(this);
+    ui->viewTable->resizeRowsToContents();
 }
 
 /*!
@@ -1218,7 +1307,13 @@ void MainWindow::on_actionOptions_triggered()
  */
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    ConfigManager::getInstance()->writeSetting("windowgeometry", saveGeometry(), "applicationsize");
-    ConfigManager::getInstance()->writeSetting("windowstate", saveState(), "applicationsize");
+
+    ConfigManager *cm = ConfigManager::getInstance();
+    cm->writeSetting("windowgeometry", saveGeometry(), "applicationsize");
+    cm->writeSetting("windowstate", saveState(), "applicationsize");
+
+    cm->writeSetting("splittersizes", ui->mainsplitter->saveState(), "applicationsize");
+
+    saveSizeViewColumns();
     QMainWindow::closeEvent(event);
 }

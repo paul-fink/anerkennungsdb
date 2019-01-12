@@ -35,7 +35,7 @@ class ConfigDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit ConfigDialog(QWidget *parent = 0);
+    explicit ConfigDialog(QWidget *parent = nullptr);
     ~ConfigDialog();
 
     void setDatabaseLocation(int locId, const QString &location);
@@ -43,6 +43,9 @@ public:
 
     void setLanguage(const QString &lang);
     QString language() const;
+
+    void setFontSize(const int size);
+    int fontSize() const;
 
 private slots:
     void on_databaseButton_clicked();

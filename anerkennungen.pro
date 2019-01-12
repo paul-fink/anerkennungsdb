@@ -57,4 +57,4 @@ win32: RC_ICONS = images/akdb.ico
 # LIBS += -L$$PWD/3rdparty/lib -lquazip
 
 # Usage of system wide installed and accessible QuaZIP
-# LIBS += -lquazip
+ LIBS += -lquazip5

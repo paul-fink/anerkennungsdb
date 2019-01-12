@@ -107,6 +107,34 @@
     </widget>
    </item>
    <item>
+    <widget class="QGroupBox" name="fontsizeGBox">
+     <property name="title">
+      <string>Fontsize</string>
+     </property>
+     <layout class="QVBoxLayout" name="fontsizeVLayout">
+      <item>
+       <widget class="QSpinBox" name="fontsizeSpinBox">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimum">
+         <number>5</number>
+        </property>
+        <property name="maximum">
+         <number>20</number>
+        </property>
+        <property name="value">
+         <number>9</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>

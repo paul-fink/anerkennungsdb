@@ -54,6 +54,9 @@ public:
 private:
     QSqlDatabase SqliteDatabase;
     bool initDatabase();
+    bool TimestampAdditionMigration();
+    bool columnNotExistsForTable(const QString &table, const QString &column);
+    QString getTimestamp();
 };
 
 #endif // DATABASE_H

@@ -32,9 +32,6 @@ int main(int argc, char *argv[])
     //a.setOrganizationName("PaulFink");
     a.setWindowIcon(QIcon(":/images/akdb128.png"));
 
-    ConfigManager cm;
-    cm.loadLanguage();
-
     MainWindow w;
     if(!w.initDatabase()) {
         // Failed to connect to database

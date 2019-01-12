@@ -53,42 +53,47 @@
         <translation>Sprache</translation>
     </message>
     <message>
-        <location filename="../configdialog.ui" line="143"/>
+        <location filename="../configdialog.ui" line="112"/>
+        <source>Fontsize</source>
+        <translation>Schriftgröße</translation>
+    </message>
+    <message>
+        <location filename="../configdialog.ui" line="171"/>
         <source>Cancel</source>
         <translation>Abbrechen</translation>
     </message>
     <message>
-        <location filename="../configdialog.ui" line="153"/>
+        <location filename="../configdialog.ui" line="181"/>
         <source>Save (requires restart)</source>
         <translation>Speichern (Neustart erforderlich)</translation>
     </message>
     <message>
-        <location filename="../configdialog.cpp" line="68"/>
+        <location filename="../configdialog.cpp" line="70"/>
         <source>Executable directory</source>
         <translation>Verzeichnis der Anwendung</translation>
     </message>
     <message>
-        <location filename="../configdialog.cpp" line="69"/>
+        <location filename="../configdialog.cpp" line="71"/>
         <source>Generic application configuration directory</source>
         <translation>Standard-Verzeichnis für Anwendungs-Einstellungen</translation>
     </message>
     <message>
-        <location filename="../configdialog.cpp" line="70"/>
+        <location filename="../configdialog.cpp" line="72"/>
         <source>Custom directory</source>
         <translation>Anderes Verzeichnis</translation>
     </message>
     <message>
-        <location filename="../configdialog.cpp" line="76"/>
+        <location filename="../configdialog.cpp" line="78"/>
         <source>German</source>
         <translation>Deutsch</translation>
     </message>
     <message>
-        <location filename="../configdialog.cpp" line="77"/>
+        <location filename="../configdialog.cpp" line="79"/>
         <source>English</source>
         <translation>Englisch</translation>
     </message>
     <message>
-        <location filename="../configdialog.cpp" line="91"/>
+        <location filename="../configdialog.cpp" line="98"/>
         <source>Database location</source>
         <translation>Datenbank Verzeichnis</translation>
     </message>
@@ -96,33 +101,33 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../mainwindow.ui" line="36"/>
-        <location filename="../mainwindow.ui" line="1121"/>
+        <location filename="../mainwindow.ui" line="42"/>
+        <location filename="../mainwindow.ui" line="925"/>
         <source>View</source>
         <translation>Ansicht</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="122"/>
+        <location filename="../mainwindow.ui" line="129"/>
         <source>Add</source>
         <translation>Hinzufügen</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="132"/>
+        <location filename="../mainwindow.ui" line="139"/>
         <source>Delete</source>
         <translation>Löschen</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="142"/>
+        <location filename="../mainwindow.ui" line="149"/>
         <source>Modify</source>
         <translation>Ändern</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="172"/>
+        <location filename="../mainwindow.ui" line="179"/>
         <source>Match All of the following</source>
         <translation>Alle Bedinungen erfüllen</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="185"/>
+        <location filename="../mainwindow.ui" line="192"/>
         <source>Match Any of the following</source>
         <translation>Irgendeine Bedingung erfüllen</translation>
     </message>
@@ -132,264 +137,264 @@
         <translation>AnerkennungsDB</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="85"/>
-        <location filename="../mainwindow.cpp" line="415"/>
+        <location filename="../mainwindow.ui" line="91"/>
+        <location filename="../mainwindow.cpp" line="484"/>
         <source>Course</source>
         <translation>Kurs</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1070"/>
+        <location filename="../mainwindow.ui" line="873"/>
         <source>Reset</source>
         <translation>Zurücksetzen</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1080"/>
+        <location filename="../mainwindow.ui" line="883"/>
         <source>Search</source>
         <translation>Suchen</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1102"/>
+        <location filename="../mainwindow.ui" line="906"/>
         <source>File</source>
         <translation>Datei</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1131"/>
+        <location filename="../mainwindow.ui" line="935"/>
         <source>Help</source>
         <translation>Hilfe</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1151"/>
-        <location filename="../mainwindow.cpp" line="119"/>
+        <location filename="../mainwindow.ui" line="955"/>
+        <location filename="../mainwindow.cpp" line="124"/>
         <source>Modules</source>
         <translation>Module</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1159"/>
-        <location filename="../mainwindow.cpp" line="118"/>
+        <location filename="../mainwindow.ui" line="963"/>
+        <location filename="../mainwindow.cpp" line="123"/>
         <source>Courses</source>
         <translation>Kurse</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1167"/>
+        <location filename="../mainwindow.ui" line="971"/>
         <source>Courses per Module</source>
         <translation>Kurse je Modul</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1175"/>
+        <location filename="../mainwindow.ui" line="979"/>
         <source>Modules per Course</source>
         <translation>Module je Kurs</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1183"/>
-        <location filename="../mainwindow.cpp" line="122"/>
+        <location filename="../mainwindow.ui" line="987"/>
+        <location filename="../mainwindow.cpp" line="127"/>
         <source>Transfers</source>
         <translation>Anerkennungen</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1188"/>
+        <location filename="../mainwindow.ui" line="992"/>
         <source>Quit</source>
         <translation>Beenden</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1193"/>
+        <location filename="../mainwindow.ui" line="997"/>
         <source>About AnerkennungsDB</source>
         <translation>Über AnerkennungsDB</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1208"/>
+        <location filename="../mainwindow.ui" line="1012"/>
         <source>CSV</source>
         <translation>CSV</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1211"/>
+        <location filename="../mainwindow.ui" line="1015"/>
         <source>Export into CSV file</source>
         <translation>Export in CSV-Dateien</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1216"/>
+        <location filename="../mainwindow.ui" line="1020"/>
         <source>SQLite</source>
         <translation>SQLite</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1219"/>
+        <location filename="../mainwindow.ui" line="1023"/>
         <source>Export into SQLite file</source>
         <translation>Export in eine SQLite Datei</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1224"/>
+        <location filename="../mainwindow.ui" line="1028"/>
         <source>Single CSV</source>
         <translation>CSV (eine Datei)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1227"/>
+        <location filename="../mainwindow.ui" line="1031"/>
         <source>Export into single CSV file</source>
         <translation>Export in eine einzige CSV-Datei</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1232"/>
+        <location filename="../mainwindow.ui" line="1036"/>
         <source>Print</source>
         <translation>Drucken</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1235"/>
+        <location filename="../mainwindow.ui" line="1039"/>
         <source>Print current view</source>
         <translation>Drucken der aktuellen Ansicht</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1106"/>
+        <location filename="../mainwindow.ui" line="910"/>
         <source>Export</source>
         <translation>Export</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1198"/>
+        <location filename="../mainwindow.ui" line="1002"/>
         <source>Import</source>
         <translation>Import</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1203"/>
+        <location filename="../mainwindow.ui" line="1007"/>
         <source>Options</source>
         <translation>Optionen</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="52"/>
+        <location filename="../mainwindow.cpp" line="56"/>
         <source>SQLite database (*.sqlite)</source>
         <translation>SQLite Datenbank (*.sqlite)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="52"/>
-        <location filename="../mainwindow.cpp" line="53"/>
-        <location filename="../mainwindow.cpp" line="1103"/>
+        <location filename="../mainwindow.cpp" line="56"/>
+        <location filename="../mainwindow.cpp" line="57"/>
+        <location filename="../mainwindow.cpp" line="1195"/>
         <source>All files (*)</source>
         <translation>Alle Dateien (*)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="120"/>
+        <location filename="../mainwindow.cpp" line="125"/>
         <source>Courses per module (not editable)</source>
         <translation>Kurse je Modul (Nicht editierbar)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="121"/>
+        <location filename="../mainwindow.cpp" line="126"/>
         <source>Modules per course (not editable)</source>
         <translation>Module je Kurs (Nicht editierbar)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="138"/>
+        <location filename="../mainwindow.cpp" line="143"/>
         <source>equals</source>
         <translation>gleicht</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="136"/>
+        <location filename="../mainwindow.cpp" line="141"/>
         <source>contains</source>
         <translation>enthält</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="139"/>
+        <location filename="../mainwindow.cpp" line="144"/>
         <source>does not equal</source>
         <translation>gleicht nicht</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="137"/>
+        <location filename="../mainwindow.cpp" line="142"/>
         <source>does not contain</source>
         <translation>enthält nicht</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="53"/>
+        <location filename="../mainwindow.cpp" line="57"/>
         <source>CSV (*.csv)</source>
         <translation>CSV (*.csv)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="236"/>
+        <location filename="../mainwindow.cpp" line="242"/>
         <source>Error in query &apos;selectquery&apos;:</source>
         <translation>Fehler in Query &apos;selectquery&apos;:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="242"/>
+        <location filename="../mainwindow.cpp" line="248"/>
         <source>Error setting query to &apos;tableModel&apos;:</source>
         <translation>Fehler beim Setzen der Query in &apos;tableModel&apos;:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="342"/>
+        <location filename="../mainwindow.cpp" line="363"/>
         <source>Displaying %1 of %2 entries</source>
         <translation>Anzeigen von %1 der %2 Einträge</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="419"/>
+        <location filename="../mainwindow.cpp" line="488"/>
         <source>Module</source>
         <translation>Modul</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="761"/>
+        <location filename="../mainwindow.cpp" line="850"/>
         <source>Delete entry</source>
         <translation>Eintrag löschen</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="762"/>
+        <location filename="../mainwindow.cpp" line="851"/>
         <source>Would you like to delete the selected entry?</source>
         <translation>Möchten Sie den ausgewählten Eintrag löschen?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="888"/>
+        <location filename="../mainwindow.cpp" line="977"/>
         <source>Unable to start printer</source>
         <translation>Drucker kann nicht geladen werden</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="929"/>
+        <location filename="../mainwindow.cpp" line="1018"/>
         <source>Error in printing the table:</source>
         <translation>Fehler beim Drucken der Tabelle:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1027"/>
-        <location filename="../mainwindow.cpp" line="1052"/>
-        <location filename="../mainwindow.cpp" line="1067"/>
-        <location filename="../mainwindow.cpp" line="1089"/>
-        <location filename="../mainwindow.cpp" line="1107"/>
-        <location filename="../mainwindow.cpp" line="1141"/>
+        <location filename="../mainwindow.cpp" line="1119"/>
+        <location filename="../mainwindow.cpp" line="1144"/>
+        <location filename="../mainwindow.cpp" line="1159"/>
+        <location filename="../mainwindow.cpp" line="1181"/>
+        <location filename="../mainwindow.cpp" line="1199"/>
+        <location filename="../mainwindow.cpp" line="1233"/>
         <source>Database Export</source>
         <translation>Datenbank Export</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1042"/>
+        <location filename="../mainwindow.cpp" line="1134"/>
         <source>Target file is not writable.</source>
         <translation>Die Ziel-Datei ist nicht schreibbar.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1052"/>
+        <location filename="../mainwindow.cpp" line="1144"/>
         <source>Database has been successfully exported to SQLite.</source>
         <translation>Die Datenbank wurde erfolgreich als SQLite-Datei exportiert.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1089"/>
+        <location filename="../mainwindow.cpp" line="1181"/>
         <source>Database has been successfully exported to a single CSV file.</source>
         <translation>Die Datenbank wurde erfolgreich in eine einzige CSV-Datei exportiert.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1103"/>
+        <location filename="../mainwindow.cpp" line="1195"/>
         <source>Zip-Archive (*.zip)</source>
         <translation>Zip-Archiv (*.zip)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1122"/>
+        <location filename="../mainwindow.cpp" line="1214"/>
         <source>Unable to create temporary directory</source>
         <translation>Es konnte kein temporäres Verzeichnis erstellt werden</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1141"/>
+        <location filename="../mainwindow.cpp" line="1233"/>
         <source>Database has been successfully exported to a zip-archive of CSV files.</source>
         <translation>Die Datenbank wurde erfolgreich in eine zip-Archiv von CSV-Dateien exportiert.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1158"/>
-        <location filename="../mainwindow.cpp" line="1182"/>
+        <location filename="../mainwindow.cpp" line="1251"/>
+        <location filename="../mainwindow.cpp" line="1275"/>
         <source>Database Import</source>
         <translation>Datenbank Import</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1166"/>
+        <location filename="../mainwindow.cpp" line="1259"/>
         <source>Selected file is not readable.</source>
         <translation>Die ausgewählte Datei ist nicht lesbar.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1182"/>
+        <location filename="../mainwindow.cpp" line="1275"/>
         <source>Database was successfully imported.</source>
         <translation>Die Datenbank wurde erfolgreich importiert.</translation>
     </message>
@@ -408,37 +413,37 @@
     </message>
     <message>
         <location filename="../modifydialog.ui" line="98"/>
-        <location filename="../modifydialog.cpp" line="74"/>
+        <location filename="../modifydialog.cpp" line="76"/>
         <source>Origin</source>
         <translation>Herkunft</translation>
     </message>
     <message>
-        <location filename="../modifydialog.cpp" line="70"/>
+        <location filename="../modifydialog.cpp" line="72"/>
         <source>Add</source>
         <translation>hinzufügen</translation>
     </message>
     <message>
-        <location filename="../modifydialog.cpp" line="70"/>
+        <location filename="../modifydialog.cpp" line="72"/>
         <source>Edit</source>
         <translation>ändern</translation>
     </message>
     <message>
-        <location filename="../modifydialog.cpp" line="73"/>
+        <location filename="../modifydialog.cpp" line="75"/>
         <source>course entry</source>
         <translation>Kurs-Eintrag</translation>
     </message>
     <message>
-        <location filename="../modifydialog.cpp" line="77"/>
+        <location filename="../modifydialog.cpp" line="79"/>
         <source>module entry</source>
         <translation>Modul-Eintrag</translation>
     </message>
     <message>
-        <location filename="../modifydialog.cpp" line="78"/>
+        <location filename="../modifydialog.cpp" line="80"/>
         <source>PO</source>
         <translation>PO</translation>
     </message>
     <message>
-        <location filename="../modifydialog.cpp" line="80"/>
+        <location filename="../modifydialog.cpp" line="82"/>
         <source>%1 %2</source>
         <translation>%2 %1</translation>
     </message>
@@ -446,53 +451,53 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../database.cpp" line="71"/>
+        <location filename="../database.cpp" line="73"/>
         <source>Connection to database closed</source>
         <translation>Verbindung zur Datenbank geschlossen</translation>
     </message>
     <message>
-        <location filename="../database.cpp" line="89"/>
+        <location filename="../database.cpp" line="91"/>
         <source>Connection to database failed</source>
         <translation>Verbindug zu Datenbank fehlgeschlagen</translation>
     </message>
     <message>
-        <location filename="../database.cpp" line="90"/>
+        <location filename="../database.cpp" line="92"/>
         <source>An error occured on opening the database connection: %1</source>
         <translation>Ein Fehler ist beim Herstellen der Verbinung aufgetreten: %1</translation>
     </message>
     <message>
-        <location filename="../database.cpp" line="93"/>
+        <location filename="../database.cpp" line="95"/>
         <source>Connection to database successful</source>
         <translation>Verbindung zu Datenbank erfolgreich hergestellt</translation>
     </message>
     <message>
-        <location filename="../database.cpp" line="113"/>
         <location filename="../database.cpp" line="116"/>
+        <location filename="../database.cpp" line="119"/>
         <source>Database error in &apos;%1&apos;: %2</source>
         <translation>Datenbankfehler in &apos;%1&apos;: %2</translation>
     </message>
     <message>
-        <location filename="../configmanager.cpp" line="189"/>
+        <location filename="../configmanager.cpp" line="218"/>
         <source>German</source>
         <translation>Deutsch</translation>
     </message>
     <message>
-        <location filename="../configmanager.cpp" line="190"/>
+        <location filename="../configmanager.cpp" line="219"/>
         <source>English</source>
         <translation>Englisch</translation>
     </message>
     <message>
-        <location filename="../csvwriter.cpp" line="55"/>
+        <location filename="../csvwriter.cpp" line="57"/>
         <source>Target file is not writable.</source>
         <translation>Die Ziel-Datei ist nicht schreibbar.</translation>
     </message>
     <message>
-        <location filename="../csvwriter.cpp" line="62"/>
+        <location filename="../csvwriter.cpp" line="64"/>
         <source>Error in query &apos;selectquery&apos;:</source>
         <translation>Fehler in Query &apos;selectquery&apos;:</translation>
     </message>
     <message>
-        <location filename="../printlayout.cpp" line="43"/>
+        <location filename="../printlayout.cpp" line="45"/>
         <source>Page %1</source>
         <translation>Seite %1</translation>
     </message>
@@ -587,42 +592,42 @@
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../transferadddialog.cpp" line="87"/>
+        <location filename="../transferadddialog.cpp" line="89"/>
         <source>Error in &apos;selectcoursequery&apos;</source>
         <translation>Fehler in &apos;selectcoursequery&apos;</translation>
     </message>
     <message>
-        <location filename="../transferadddialog.cpp" line="91"/>
+        <location filename="../transferadddialog.cpp" line="93"/>
         <source>Error setting query to &apos;coursemodel&apos;</source>
         <translation>Fehler beim Setzen der Query in &apos;coursemodel&apos;</translation>
     </message>
     <message>
-        <location filename="../transferadddialog.cpp" line="106"/>
+        <location filename="../transferadddialog.cpp" line="108"/>
         <source>Error in &apos;selectmodulequery&apos;</source>
         <translation>Fehler in &apos;selectmodulequery&apos;</translation>
     </message>
     <message>
-        <location filename="../transferadddialog.cpp" line="110"/>
+        <location filename="../transferadddialog.cpp" line="112"/>
         <source>Error setting query to &apos;modulemodel&apos;</source>
         <translation>Fehler beim Setzen der Query in &apos;modulemodel&apos;</translation>
     </message>
     <message>
-        <location filename="../transferadddialog.cpp" line="187"/>
+        <location filename="../transferadddialog.cpp" line="189"/>
         <source>Please select a course and module first!</source>
         <translation>Bitte zuerst ein Kurs und Modul auswählen!</translation>
     </message>
     <message>
-        <location filename="../transferadddialog.cpp" line="197"/>
+        <location filename="../transferadddialog.cpp" line="199"/>
         <source>This transfer already exists!</source>
         <translation>Diese Anerkennung existiert bereits!</translation>
     </message>
     <message>
-        <location filename="../transferadddialog.cpp" line="203"/>
+        <location filename="../transferadddialog.cpp" line="205"/>
         <source>This transfer does not exist yet. Beware the ECTS-credits differ!</source>
         <translation>Diese Anerkennung existiert noch nicht. Achtung: Die ECTS-Punte unterscheiden sich!</translation>
     </message>
     <message>
-        <location filename="../transferadddialog.cpp" line="206"/>
+        <location filename="../transferadddialog.cpp" line="208"/>
         <source>This transfer does not exist yet.</source>
         <translation>Diese Anerkennung existiert noch nicht.</translation>
     </message>

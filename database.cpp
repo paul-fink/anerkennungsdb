@@ -84,16 +84,17 @@ bool Database::closeDatabase()
  */
 bool Database::openDatabase()
 {
-    qsrand(QTime::currentTime().msec());
+    qsrand(static_cast<uint>(QTime::currentTime().msec()));
     SqliteDatabase.setDatabaseName(getDBFilePath());
 
     if (!SqliteDatabase.open()) {
-        QMessageBox::critical(0, QObject::tr("Connection to database failed"),
+        QMessageBox::critical(nullptr, QObject::tr("Connection to database failed"),
                              QObject::tr("An error occured on opening the database connection: %1").arg(SqliteDatabase.lastError().text()));
         return false;
     }
     qDebug() << QObject::tr("Connection to database successful");
     initDatabase();
+    TimestampAdditionMigration();
     return true;
 }
 
@@ -136,43 +137,54 @@ bool Database::initDatabase() {
     QStringList tableList = SqliteDatabase.tables(QSql::Tables);
     if(!tableList.contains("Module")) {
         query.prepare("CREATE TABLE Module ("
-                        "ID INTEGER PRIMARY KEY,"
+                        "ID INTEGER NOT NULL PRIMARY KEY,"
                         "Modulname TEXT NOT NULL,"
                         "PO TEXT,"
-                        "ECTS INTEGER NOT NULL"
+                        "ECTS INTEGER NOT NULL,"
+                        "Datum TEXT NOT NULL"
                       ")");
         exec(&query, "CREATE TABLE Module");
     }
     if(!tableList.contains("Kurse")) {
         query.prepare("CREATE TABLE Kurse ("
-                        "ID INTEGER PRIMARY KEY,"
+                        "ID INTEGER NOT NULL PRIMARY KEY,"
                         "Kursname TEXT NOT NULL,"
                         "Herkunft TEXT,"
-                        "ECTS INTEGER NOT NULL"
+                        "ECTS INTEGER NOT NULL,"
+                        "Datum TEXT NOT NULL"
                       ")");
         exec(&query, "CREATE TABLE Kurse");
     }
     if(!tableList.contains("Anerkennungen")) {
         query.prepare("CREATE TABLE Anerkennungen ("
-                        "ID INTEGER PRIMARY KEY,"
+                        "ID INTEGER NOT NULL PRIMARY KEY,"
                         "MID INTEGER, KID INTEGER,"
+                        "Datum TEXT NOT NULL,"
                         "FOREIGN KEY(MID) REFERENCES Module(ID),"
                         "FOREIGN KEY(KID) REFERENCES Kurse(ID)"
                       ")");
         exec(&query, "CREATE TABLE Anerkennungen");
+    }
+    if(!tableList.contains("DBMigration")) {
+        query.prepare("CREATE TABLE DBMigration("
+                        "ID INTEGER NOT NULL PRIMARY KEY,"
+                        "Name TEXT NOT NULL,"
+                        "Datum TEXT NOT NULL"
+                      ")");
+        exec(&query, "CREATE TABLE DBMigration");
     }
 
     // Init views
     QStringList viewList = SqliteDatabase.tables(QSql::Views);
     if(!viewList.contains("anerkmodule")) {
         query.prepare("CREATE VIEW anerkmodule AS "
-                      "SELECT A.MID AS ID, K.Kursname AS Kursname, K.ECTS AS ECTS, K.Herkunft AS Herkunft "
+                      "SELECT A.MID AS ID, K.Kursname AS Kursname, K.ECTS AS ECTS, K.Herkunft AS Herkunft, K.Datum AS Datum "
                       "FROM Anerkennungen A JOIN Kurse K ON K.ID = A.KID");
         exec(&query, "CREATE VIEW anerkmodule");
     }
     if(!viewList.contains("anerkkurse")) {
         query.prepare("CREATE VIEW anerkkurse AS "
-                      "SELECT A.KID AS ID, M.Modulname AS Modulname, M.ECTS AS ECTS, M.PO AS PO "
+                      "SELECT A.KID AS ID, M.Modulname AS Modulname, M.ECTS AS ECTS, M.PO AS PO, M.Datum AS Datum "
                       "FROM Module M JOIN Anerkennungen A ON A.MID=M.ID");
         exec(&query,"CREATE VIEW anerkkurse");
     }
@@ -289,7 +301,7 @@ int Database::updateEntry(const QString &table, const QStringList &updcols, cons
             sql += updcols.at(i);
             sql += "=?";
         }
-        sql += " WHERE ID=?";
+        sql += ",Datum=? WHERE ID=?";
         query.prepare(sql);
         int idx = 0;
         for(int i = 0; i < updvals.size(); i++) {
@@ -300,6 +312,7 @@ int Database::updateEntry(const QString &table, const QStringList &updcols, cons
                 query.bindValue(idx++, bindparam);
             }
         }
+        query.bindValue(idx++, getTimestamp());
         query.bindValue(idx++, id);
         exec(&query, "updateEntry");
         return query.numRowsAffected();
@@ -324,7 +337,7 @@ int Database::insertEntry(const QString &table, const QStringList &updcols, cons
 
         QSqlQuery query;
         QString bindparam;
-        QString sql = QString("INSERT INTO %1 (%2) VALUES (%3)").arg(table).arg(updcols.join(",")).arg(QString("?,").repeated(updcols.size()-1).append("?"));
+        QString sql = QString("INSERT INTO %1 (%2,Datum) VALUES (%3,?)").arg(table).arg(updcols.join(",")).arg(QString("?,").repeated(updcols.size()-1).append("?"));
         query.prepare(sql);
         for(int i = 0; i < updvals.size(); i++) {
             bindparam = updvals.at(i);
@@ -334,6 +347,7 @@ int Database::insertEntry(const QString &table, const QStringList &updcols, cons
                 query.bindValue(i, bindparam);
             }
         }
+        query.bindValue(updvals.size(), getTimestamp());
         exec(&query, "insertEntry");
         return query.numRowsAffected();
     }
@@ -380,3 +394,106 @@ int Database::countEntries(const QString &table, const QStringList &addcols, con
     return query.value(0).toInt();
 }
 
+/*!
+ * \brief Timestamp database migration
+ *
+ * This function performs the database migration of adding a column 'Datum'
+ * containing the timestamp of modification to all tables.
+ *
+ * The views are recreated if necessary
+ *
+ * If any modification is actually performed, the settings of the tableview column widths are also removed.
+ * (otherwise it would lead to columns being visible).
+ */
+bool Database::TimestampAdditionMigration()
+{
+    QSqlQuery query;
+    // Has the migration already be performed?
+    query.prepare("SELECT COUNT(*) FROM DBMigration WHERE NAME=?");
+    query.bindValue(0, "timestapAddition");
+    exec(&query, "TimeStampAdditionCount");
+    query.next();
+    bool isMigrated = query.value(0).toBool();
+
+    if(!isMigrated) {
+
+        // It is not in database and thus yet to do for us.
+        bool refreshviews = false;
+
+        QString sqlstring("ALTER TABLE %1 ADD COLUMN Datum Text NOT NULL DEFAULT '%2'");
+
+        if(columnNotExistsForTable("Module", "Datum")) {
+            query.prepare(sqlstring.arg("Module").arg(getTimestamp()));
+            exec(&query, "ALTER TABLE Module (Timestamp)");
+            refreshviews = true;
+        }
+
+        if(columnNotExistsForTable("Kurse", "Datum")) {
+            query.prepare(sqlstring.arg("Kurse").arg(getTimestamp()));
+            exec(&query, "ALTER TABLE Kurse (Timestamp)");
+            refreshviews = true;
+        }
+
+        if(columnNotExistsForTable("Anerkennungen", "Datum")) {
+            query.prepare(sqlstring.arg("Anerkennungen").arg(getTimestamp()));
+            exec(&query, "ALTER TABLE Anerkennungen (Timestamp)");
+            refreshviews = true;
+        }
+
+        if(refreshviews){
+            // Recreate Views
+            //anerkmodule
+            query.exec("DROP VIEW anerkmodule");
+            query.prepare("CREATE VIEW anerkmodule AS "
+                          "SELECT A.MID AS ID, K.Kursname AS Kursname, K.ECTS AS ECTS, K.Herkunft AS Herkunft, K.Datum AS Datum "
+                          "FROM Anerkennungen A JOIN Kurse K ON K.ID = A.KID");
+            exec(&query, "CREATE VIEW anerkmodule (Timestamp)");
+
+            // anerkkurse
+            query.exec("DROP VIEW anerkkurse");
+            query.prepare("CREATE VIEW anerkkurse AS "
+                          "SELECT A.KID AS ID, M.Modulname AS Modulname, M.ECTS AS ECTS, M.PO AS PO, M.Datum AS Datum "
+                          "FROM Module M JOIN Anerkennungen A ON A.MID=M.ID");
+            exec(&query,"CREATE VIEW anerkkurse (Timestamp)");
+
+            // As we have updated some table scheme, we need to remove all the settings of the tableView to avoid inconsistencies
+            ConfigManager::getInstance()->removeGroupSettings("tableViewWidths");
+        }
+
+        query.prepare("INSERT INTO DBMigration (Name,Datum) VALUES (?,?)");
+        query.bindValue(0, "timestapAddition");
+        query.bindValue(1, getTimestamp());
+        exec(&query, "TimeStampAdditionInsert");
+    }
+    return true;
+}
+
+/*!
+ * \brief This function checks for the non existence of columns in a table
+ *
+ * It queries the table structure of \a table if the \a column exists.
+ * This function returns a \c bool which is false if the column does not exists.
+ */
+bool Database::columnNotExistsForTable(const QString &table, const QString &column)
+{
+    QSqlQuery query;
+    query.prepare(QString("PRAGMA table_info(%1)").arg(table));
+    exec(&query, "columnExists");
+    while (query.next()) {
+        if(column.compare(query.value(1).toString(), Qt::CaseInsensitive) == 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
+/*!
+ * \brief Create a Timestamp
+ *
+ * This function creates a timestamp of the current date.
+ * It returns it as QString in the format yyy-MM-dd hh:mm:ss, that is, 2019-01-25 15:01:59
+ */
+QString Database::getTimestamp()
+{
+    return QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+}

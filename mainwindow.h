@@ -33,7 +33,7 @@
 #include <QPrintPreviewDialog>
 #include <QtGlobal>
 #include <QStatusBar>
-#include <quazip/JlCompress.h>
+#include "quazip5/JlCompress.h"
 #include "database.h"
 #include "modifydialog.h"
 #include "transferadddialog.h"
@@ -52,8 +52,8 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+    explicit MainWindow(QWidget *parent = nullptr);
+    ~MainWindow() override;
 
     bool initGuiElements();
     bool initDatabase();
@@ -71,6 +71,7 @@ private slots:
     void on_viewComboBox_currentIndexChanged(int index);
 
     void tableViewSelectionModel_currentRowChanged(const QModelIndex &current, const QModelIndex &previous);
+    void tableView_headerResized(int logicalIndex, int oldSize, int newSize);
 
     void on_editButtonsDelete_clicked();
     void on_editButtonsModify_clicked();
@@ -109,11 +110,17 @@ private:
 
     QStack<QLayoutItem*> *searchWidgetStack;
 
+    ConfigManager cm;
+
     int ididx;
     int lastididx;
     int nameIndex;
 
-    bool hasSearched;
+    int lastTableIndex;
+
+    bool hasSearched;   
+    bool allowResize;
+
     QString readonlyId;
 
     QStringList filefiltersSqlite;
@@ -136,6 +143,8 @@ private:
     bool isAddAllowed();
     bool isEditAllowed();
     QString getCurrentView() const;
+    bool restoreSizeViewColumns(const QString &table = QString());
+    bool saveSizeViewColumns(const QString &table = QString());
 };
 
 #endif // MAINWINDOW_H

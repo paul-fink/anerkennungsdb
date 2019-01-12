@@ -37,7 +37,7 @@
  *
  * This is the static pointer to the application wide ConfigManager
  */
-static ConfigManager *globalConfigManager = 0;
+static ConfigManager *globalConfigManager = nullptr;
 
 
 /*!
@@ -48,14 +48,13 @@ static ConfigManager *globalConfigManager = 0;
  * It sets the pointer of the global application manager to itself and
  * finally loads the settings
  */
-ConfigManager::ConfigManager() : persistentConfig(0)
+ConfigManager::ConfigManager() : persistentConfig(nullptr)
 {
     languages = new QHash<QString,QString>();
     qtTranslator = new QTranslator(QCoreApplication::instance());
     qtBaseTranslator = new QTranslator(QCoreApplication::instance());
     appTranslator = new QTranslator(QCoreApplication::instance());
     globalConfigManager = this;
-    loadSettings();
 }
 
 /*!
@@ -65,7 +64,7 @@ ConfigManager::ConfigManager() : persistentConfig(0)
  */
 ConfigManager::~ConfigManager()
 {
-    globalConfigManager = 0;
+    globalConfigManager = nullptr;
     if(persistentConfig) delete persistentConfig;
     delete appTranslator;
     delete qtBaseTranslator;
@@ -90,13 +89,24 @@ ConfigManager* ConfigManager::getInstance()
  *
  * If the persistent settings have not been loaded yet, the settings are loaded from file system
  */
-void ConfigManager::loadSettings()
+void ConfigManager::loadSettingsFile()
 {
     QSettings *config = persistentConfig;
     if(!config) {
         config = new QSettings(QSettings::IniFormat, QSettings::UserScope, "anerkennungsDB", "anerkennungsdb");
         persistentConfig = config;
     }
+}
+
+/*!
+ * \brief Load all (currently available) settings except database location
+ *
+ * It reads the settings file and then loads the language and font size settings
+ */
+void ConfigManager::loadSettings() {
+    loadSettingsFile();
+    loadLanguage();
+    loadFontSize();
 }
 
 /*!
@@ -130,6 +140,23 @@ void ConfigManager::writeSetting(const QString &key, const QVariant &value, cons
     if(!group.isEmpty()) persistentConfig->beginGroup(group);
     persistentConfig->setValue(key, value);
     if(!group.isEmpty()) persistentConfig->endGroup();
+    persistentConfig->sync();
+}
+
+/*!
+ * \brief ConfigManager::removeGroupSettings
+ * \param group
+ * \return
+ */
+void ConfigManager::removeGroupSettings(const QString &group)
+{
+    Q_ASSERT(persistentConfig);
+    if(!group.isEmpty()) {
+        persistentConfig->beginGroup(group);
+        persistentConfig->remove("");
+        persistentConfig->endGroup();
+        persistentConfig->sync();
+    }
 }
 
 /*!
@@ -194,6 +221,18 @@ void ConfigManager::loadLanguage()
 }
 
 /*!
+ * \brief Loads the GUI font size and updates it
+ */
+void ConfigManager::loadFontSize()
+{
+    QString interfaceFontFamily = "DejaVu Sans";
+
+    int size = readSetting("fontsize", QApplication::font().pointSize(), "interface").toInt();
+
+    QFont myfont = QFont(interfaceFontFamily, size);
+    QApplication::setFont(myfont);
+}
+/*!
  * \fn ConfigManager::execConfigDialog(QWidget *parent = 0)
  *
  * \brief Handles the config dialog
@@ -209,6 +248,8 @@ void ConfigManager::execConfigDialog(QWidget *parent) {
                              readSetting("locationPath", "", "database").toString());
     dlg->setLanguage(languages->value(readSetting("language", "de", "interface").toString()));
 
+    dlg->setFontSize(readSetting("fontsize", QApplication::font().pointSize(), "interface").toInt());
+
     if(dlg->exec()) {
         QString dblocraw = dlg->databaseLocation();
         int sepidx = dblocraw.indexOf(":::");
@@ -216,9 +257,17 @@ void ConfigManager::execConfigDialog(QWidget *parent) {
         writeSetting("locationPath", dblocraw.remove(0,sepidx + 3), "database");
 
         writeSetting("language", dlg->language(), "interface");
+
+        int newfontsize = dlg->fontSize();
+        writeSetting("fontsize", newfontsize, "interface");
+        QApplication::setFont(QFont("DejaVu Sans", newfontsize));
+
+        persistentConfig->sync();
     }
 
     delete dlg;
 }
+
+
 
 
