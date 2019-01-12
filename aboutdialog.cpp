@@ -3,7 +3,7 @@
  *
  * This file is part of AnerkennungsDB.
  *
- * Copyright (C) 2016-2018 Paul Fink <paul.fink@mailbox.org>
+ * Copyright (C) 2016-2019 Paul Fink <paul.fink@mailbox.org>
  *
  * AnerkennungsDB is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,7 +46,7 @@ AboutDialog::AboutDialog(QWidget *parent) :
     ui->textBrowser->setHtml(QString("<b>%1 (%2)</b><br>").arg(ANERKENNUNGSDB).arg(ANERKENNUNGSDB_VERSION) +
                        tr("Using Qt version %1, compiled with Qt %2").arg(qVersion()).arg(QT_VERSION_STR) + "<br><br>"
                        "Copyright (C)<br>" +
-                       "AnerkennungsDB: Paul Fink 2016-2018<br>" +
+                       "AnerkennungsDB: Paul Fink 2016-2019<br>" +
                        tr("AnerkennungsDB uses") + " SQLite (Public Domain). <br>" +
                        tr("AnerkennungsDB uses") + " QuaZip (LGPL v2.1 + Static Linking Exception, Copyright (C) 2005-2018 Sergey A. Tachenov and contributors). <br><br>" +
                        tr("Contact:") + " <a href=\"mailto:paul.fink@mailbox.org\">paul.fink@mailbox.org</a><br><br>" +

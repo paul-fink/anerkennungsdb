@@ -22,7 +22,7 @@ It requires access to the [QuaZIP](https://github.com/stachenov/quazip) library,
 See the comments at the end of [anerkennungen.pro](./anerkennungen.pro)
 
 ## Translations
-currently, German is the only language for which a translation is provided. Translations into other languages are always welcome.
+Currently, German is the only language for which a translation is provided. Translations into other languages are always welcome.
 
 ## License
 GPL version 3 or later

@@ -34,7 +34,8 @@ HEADERS  += mainwindow.h \
     configmanager.h \
     csvwriter.h \
     tableprinter.h \
-    printlayout.h
+    printlayout.h \
+    version.h
 
 FORMS    += mainwindow.ui \
     modifydialog.ui \
@@ -53,8 +54,9 @@ win32: RC_ICONS = images/akdb.ico
 
 # QuaZIP is precompiled in folder 3rdparty/lib 
 # and according header in 3rdparty/include below the project directory
-# INCLUDEPATH += $$PWD/3rdparty/include
+# INCLUDEPATH += $$PWD/3rdparty/include/quazip
 # LIBS += -L$$PWD/3rdparty/lib -lquazip
 
 # Usage of system wide installed and accessible QuaZIP
  LIBS += -lquazip5
+ INCLUDEPATH += /usr/include/quazip5
